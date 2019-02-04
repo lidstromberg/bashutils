@@ -1,0 +1,77 @@
+#!/bin/bash
+
+################################################
+# script to generate a new maven java project
+# and populate the pom.xml with known requirements
+################################################
+
+
+#########################
+#check that the supplied arguments are correct
+#########################
+if [ $# -eq 0 ]; then
+	echo "Run as 'newmvn mvnGroup mvnArtifact installDirectory pomType"
+	exit 0
+elif [ $# -gt 4 -o $# -lt 4 ]; then
+	echo "Incorrect number of arguments.. run as 'newmvn mvnGroup mvnArtifact installDirectory pomType"
+	exit 0
+fi
+
+
+#########################
+#check that the third argument is an existing directory
+#########################
+if ! [ -d $3 ]; then
+	echo "third argument should be an existing directory"
+fi
+
+
+########################
+# collect the vars
+########################
+GROUPID=$1
+ARTID=$2
+DIR=$3
+POM=$4
+
+
+########################
+#move into the target directory
+########################
+cd $DIR
+
+
+########################
+#generate the maven base project
+########################
+mvn archetype:generate \
+	-DgroupId=$GROUPID \
+	-DartifactId=$ARTID \
+	-DarchetypeArtifactId=maven-archetype-quickstart \
+	-DinteractiveMode=false
+
+
+########################
+#create a pom.xml
+########################
+if [ $POM == "beam" ]; then
+	cat ~/bin/beampom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
+else
+	cat ~/bin/basicpom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
+fi
+
+
+########################
+#populate a build file
+########################
+echo "mvn clean" > $ARTID/build
+echo "mvn compile" >> $ARTID/build
+chmod 755 $ARTID/build
+
+
+########################
+#populate a runner file
+########################
+echo "mvn package" > $ARTID/runner
+echo "java -jar target/$ARTID-bundled-1.0-SNAPSHOT.jar" >> $ARTID/runner
+chmod 755 $ARTID/runner
