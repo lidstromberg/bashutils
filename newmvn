@@ -55,9 +55,9 @@ mvn archetype:generate \
 #create a pom.xml
 ########################
 if [ $POM == "beam" ]; then
-	cat ~/bin/beampom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
+	cat ~/bin/bashutils/beampom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
 else
-	cat ~/bin/basicpom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
+	cat ~/bin/bashutils/basicpom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
 fi
 
 

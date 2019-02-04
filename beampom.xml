@@ -24,7 +24,7 @@
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
     <mockito.version>2.23.4</mockito.version>
     <pubsub.version>v1-rev405-1.25.0</pubsub.version>
-    <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
