@@ -12,12 +12,12 @@
   <properties>
     <beam.version>2.9.0</beam.version>
     <commonsio.version>2.6</commonsio.version>
+    <junit.version>4.12</junit.version>
     <bigquery.version>v2-rev410-1.25.0</bigquery.version>
     <google-clients.version>1.28.0</google-clients.version>
     <guava.version>27.0.1-jre</guava.version>
     <jackson.version>2.9.8</jackson.version>
     <joda.version>2.10.1</joda.version>
-    <junit.version>4.12</junit.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-exec-plugin.version>1.6.1</maven-exec-plugin.version>
     <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
@@ -271,7 +271,13 @@
         <artifactId>commons-io</artifactId>
         <version>${commonsio.version}</version>
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
     <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>

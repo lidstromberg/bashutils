@@ -10,10 +10,10 @@
 #check that the supplied arguments are correct
 #########################
 if [ $# -eq 0 ]; then
-	echo "Run as 'newmvn mvnGroup mvnArtifact installDirectory pomType"
+	echo "Run as 'newmvn mvnGroup mvnArtifact installDirectory pomType'"
 	exit 0
 elif [ $# -gt 4 -o $# -lt 4 ]; then
-	echo "Incorrect number of arguments.. run as 'newmvn mvnGroup mvnArtifact installDirectory pomType"
+	echo "Incorrect number of arguments.. run as 'newmvn mvnGroup mvnArtifact installDirectory pomType'"
 	exit 0
 fi
 
@@ -33,6 +33,9 @@ GROUPID=$1
 ARTID=$2
 DIR=$3
 POM=$4
+GRPROOT=`echo ${GROUPID} | sed 's/\./\//g'`
+SRCROOT=${ARTID}/src/main/java/${GRPROOT}
+RSCROOT=${ARTID}/src/main
 
 
 ########################
@@ -56,6 +59,25 @@ mvn archetype:generate \
 ########################
 if [ $POM == "beam" ]; then
 	cat ~/bin/bashutils/beampom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
+elif [ $POM == "boot" ]; then
+	cat ~/bin/bashutils/bootpom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml	
+	
+	#push in a controller and a boot app.java
+	if [ -d $SRCROOT ]; then
+		cat ~/bin/bashutils/apptext | sed "s/{{REPLACEME}}/$GROUPID/g" > $SRCROOT/App.java
+		cat ~/bin/bashutils/controllertext | sed "s/{{REPLACEME}}/$GROUPID/g" > $SRCROOT/HelloController.java
+	fi;
+	
+	#push in the resources structure and a base application.properties
+	if [ -d $RSCROOT ]; then
+		mkdir $RSCROOT/resources/
+		mkdir $RSCROOT/resources/static/
+		mkdir $RSCROOT/resources/public/
+		mkdir $RSCROOT/resources/templates/
+
+		cat ~/bin/bashutils/approp > $RSCROOT/resources/application.properties
+	fi;
+	
 else
 	cat ~/bin/bashutils/basicpom.xml | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $ARTID/pom.xml
 fi
@@ -64,14 +86,17 @@ fi
 ########################
 #populate a build file
 ########################
-echo "mvn clean" > $ARTID/build
-echo "mvn compile" >> $ARTID/build
+echo "mvn clean && mvn compile" > $ARTID/build
 chmod 755 $ARTID/build
 
 
 ########################
 #populate a runner file
+#boot isn't bundled
 ########################
-echo "mvn package" > $ARTID/runner
-echo "java -jar target/$ARTID-bundled-1.0-SNAPSHOT.jar" >> $ARTID/runner
+if [ $POM == "boot" ]; then
+	echo "mvn package && java -jar target/$ARTID-1.0-SNAPSHOT.jar" > $ARTID/runner
+else
+	echo "mvn package && java -jar target/$ARTID-bundled-1.0-SNAPSHOT.jar" > $ARTID/runner
+fi;
 chmod 755 $ARTID/runner
