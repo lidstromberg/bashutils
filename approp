@@ -6,6 +6,6 @@ server.port = 8080
 # ----------------------------------------
 # Logging Level
 # ----------------------------------------
-logging.level.root=error
+logging.level.root=info
 logging.level.org.springframework=info
-logging.level.org.hibernate=error
+logging.level.org.hibernate=info

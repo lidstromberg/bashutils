@@ -14,7 +14,9 @@
     <commonsio.version>2.6</commonsio.version>
     <junit.version>4.12</junit.version>
     <bigquery.version>v2-rev410-1.25.0</bigquery.version>
-    <google-clients.version>1.28.0</google-clients.version>
+    <api-client.version>1.28.0</api-client.version>
+    <http-client.version>1.28.0</http-client.version>
+    <google-clients.version>1.62.0</google-clients.version>
     <guava.version>27.0.1-jre</guava.version>
     <jackson.version>2.9.8</jackson.version>
     <joda.version>2.10.1</joda.version>
@@ -49,6 +51,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -185,7 +191,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>${google-clients.version}</version>
+      <version>${api-client.version}</version>
       <exclusions>
         <!-- Exclude an old version of guava that is being pulled
              in by a transitive dependency of google-api-client -->
@@ -213,7 +219,7 @@
     <dependency>
       <groupId>com.google.http-client</groupId>
       <artifactId>google-http-client</artifactId>
-      <version>${google-clients.version}</version>
+      <version>${http-client.version}</version>
       <exclusions>
         <!-- Exclude an old version of guava that is being pulled
              in by a transitive dependency of google-api-client -->

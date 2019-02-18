@@ -51,7 +51,8 @@ mvn archetype:generate \
 	-DgroupId=$GROUPID \
 	-DartifactId=$ARTID \
 	-DarchetypeArtifactId=maven-archetype-quickstart \
-	-DinteractiveMode=false
+	-DinteractiveMode=false \
+	-DarchetypeVersion=1.4
 
 
 ########################
@@ -64,8 +65,10 @@ elif [ $POM == "boot" ]; then
 	
 	#push in a controller and a boot app.java
 	if [ -d $SRCROOT ]; then
-		cat ~/bin/bashutils/apptext | sed "s/{{REPLACEME}}/$GROUPID/g" > $SRCROOT/App.java
-		cat ~/bin/bashutils/controllertext | sed "s/{{REPLACEME}}/$GROUPID/g" > $SRCROOT/HelloController.java
+		cat ~/bin/bashutils/apptext | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $SRCROOT/App.java
+		cat ~/bin/bashutils/controllertext | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $SRCROOT/HelloController.java
+		cat ~/bin/bashutils/modelcontrollertext | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $SRCROOT/GreetingController.java
+		cat ~/bin/bashutils/servinit | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $SRCROOT/ServletInitializer.java
 	fi;
 	
 	#push in the resources structure and a base application.properties
@@ -74,8 +77,13 @@ elif [ $POM == "boot" ]; then
 		mkdir $RSCROOT/resources/static/
 		mkdir $RSCROOT/resources/public/
 		mkdir $RSCROOT/resources/templates/
+		mkdir $RSCROOT/webapp/
+		mkdir $RSCROOT/webapp/WEB-INF/
 
-		cat ~/bin/bashutils/approp > $RSCROOT/resources/application.properties
+		cat ~/bin/bashutils/appeng | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $RSCROOT/webapp/WEB-INF/appengine-web.xml	
+		cat ~/bin/bashutils/approp | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $RSCROOT/resources/application.properties
+		cat ~/bin/bashutils/logprop | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $RSCROOT/resources/logging.properties
+		cat ~/bin/bashutils/modelviewtext | sed "s/{{REPLACEME}}/$GROUPID/g" | sed "s/{{REPLACE-ME}}/$ARTID/g" > $RSCROOT/resources/templates/greeting.html
 	fi;
 	
 else
@@ -95,7 +103,7 @@ chmod 755 $ARTID/build
 #boot isn't bundled
 ########################
 if [ $POM == "boot" ]; then
-	echo "mvn package && java -jar target/$ARTID-1.0-SNAPSHOT.jar" > $ARTID/runner
+	echo "mvn package && java -jar target/$ARTID-1.0-SNAPSHOT.war" > $ARTID/runner
 else
 	echo "mvn package && java -jar target/$ARTID-bundled-1.0-SNAPSHOT.jar" > $ARTID/runner
 fi;

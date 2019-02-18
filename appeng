@@ -1,0 +1,49 @@
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+  <!-- app name, version and service config -->
+  <application>{{REPLACE-ME}}</application>
+  <version>v0001</version>
+  <module>default</module>
+
+  <!-- app engine runtime config -->
+  <runtime>java8</runtime>
+  <threadsafe>true</threadsafe>
+
+  <!-- session config (datastore, memcache, taskqueue -->
+  <sessions-enabled>true</sessions-enabled>
+  <auto-id-policy>default</auto-id-policy>
+  <async-session-persistence enabled="true" queue-name="ae-session-q"/>
+
+  <!-- content config -->
+  <public-root>/</public-root>
+  <static-files>
+    <include path="/my_static-files" >
+      <http-header name="Access-Control-Allow-Origin" value="http://example.org" />
+    </include>
+    <include path="/**.png" expiration="1d 0h"/>
+  </static-files>
+  <!-- <static-error-handlers>
+    <handler file="default_error.html" />
+    <handler file="over_quota.html" error-code="over_quota" />
+    <handler file="dos-response.html" error-code="dos_api_denial" />
+  </static-error-handlers> -->
+
+  <!-- compilation optimisation.. is default -->
+  <precompilation-enabled>true</precompilation-enabled>
+
+  <!-- scaling configuration -->
+  <instance-class>B8</instance-class>
+  <basic-scaling>
+    <max-instances>2</max-instances>
+    <idle-timeout>10m</idle-timeout>
+  </basic-scaling>
+
+  <!-- logging properties... requires .level = INFO in logging.properties resource -->
+  <system-properties>
+    <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
+  </system-properties>
+
+  <!-- environment variables -->
+  <env-variables>
+    <env-var name="DEFAULT_ENCODING" value="UTF-8" />
+  </env-variables>
+</appengine-web-app>
