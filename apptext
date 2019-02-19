@@ -30,4 +30,11 @@ public class App {
         };
     }
 
+
+    @Bean
+    @Scope("prototype")
+    Logger logger(InjectionPoint injectionPoint){
+        return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass());
+    }
+
 }
