@@ -10,22 +10,29 @@
 
 
   <properties>
-    <beam.version>2.9.0</beam.version>
+    <avro.version>1.9.1</avro.version>
+    <beam.version>2.17.0</beam.version>
     <commonsio.version>2.6</commonsio.version>
-    <junit.version>4.12</junit.version>
-    <bigquery.version>v2-rev410-1.25.0</bigquery.version>
-    <api-client.version>1.28.0</api-client.version>
-    <http-client.version>1.28.0</http-client.version>
-    <google-clients.version>1.62.0</google-clients.version>
-    <guava.version>27.0.1-jre</guava.version>
-    <jackson.version>2.9.8</jackson.version>
-    <joda.version>2.10.1</joda.version>
+    <commonsnet.version>3.6</commonsnet.version>
+    <cloudsql.version>1.0.15</cloudsql.version>
+    <junit.version>4.13</junit.version>
+    <bigquery.version>v2-rev454-1.25.0</bigquery.version>
+    <api-client.version>1.30.7</api-client.version>
+    <http-client.version>1.34.0</http-client.version>
+    <google-clients.version>1.103.0</google-clients.version>
+    <postgres.version>42.2.5</postgres.version>
+    <hikari.version>3.4.2</hikari.version>
+    <guava.version>28.2-jre</guava.version>
+    <jackson-yaml.version>2.10.1</jackson-yaml.version>
+    <jackson-databind.version>2.10.1</jackson-databind.version>
+    <joda.version>2.10.5</joda.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-    <maven-exec-plugin.version>1.6.1</maven-exec-plugin.version>
+    <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
     <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
-    <mockito.version>2.23.4</mockito.version>
-    <pubsub.version>v1-rev405-1.25.0</pubsub.version>
+    <mockito.version>3.2.4</mockito.version>
+    <postgres.version>42.2.9</postgres.version>
+    <pubsub.version>v1-rev425-1.25.0</pubsub.version>
     <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -85,7 +92,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>{{REPLACEME}}.App</mainClass>
+              <mainClass>com.sixt.opt.autobid.App</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -184,8 +191,15 @@
     <dependency>
       <groupId>org.apache.beam</groupId>
       <artifactId>beam-sdks-java-io-google-cloud-platform</artifactId>
-      <version>${beam.version}</version>
+	  <version>${beam.version}</version>
     </dependency>
+    
+	<!-- https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-jdbc -->
+	<dependency>
+	  <groupId>org.apache.beam</groupId>
+	  <artifactId>beam-sdks-java-io-jdbc</artifactId>
+	  <version>${beam.version}</version>
+	</dependency>
 
     <!-- Dependencies below this line are specific dependencies needed by the examples code. -->
     <dependency>
@@ -263,7 +277,6 @@
       <version>${beam.version}</version>
       <scope>test</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -284,11 +297,65 @@
         <version>${junit.version}</version>
         <scope>test</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+    <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
     <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.version}</version>
+    	<groupId>commons-net</groupId>
+    	<artifactId>commons-net</artifactId>
+        <version>${commonsnet.version}</version>
     </dependency>
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.dataformat</groupId>
+	    <artifactId>jackson-dataformat-yaml</artifactId>
+        <version>${jackson-yaml.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+        <version>${jackson-databind.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
+	<dependency>
+	    <groupId>com.google.cloud</groupId>
+	    <artifactId>google-cloud-storage</artifactId>
+        <version>${google-clients.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-datastore -->
+	<dependency>
+	    <groupId>com.google.cloud</groupId>
+	    <artifactId>google-cloud-datastore</artifactId>
+        <version>${google-clients.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-bigquery -->
+	<dependency>
+	    <groupId>com.google.cloud</groupId>
+	    <artifactId>google-cloud-bigquery</artifactId>
+        <version>${google-clients.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.avro/avro -->
+	<dependency>
+	    <groupId>org.apache.avro</groupId>
+	    <artifactId>avro</artifactId>
+        <version>${avro.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/postgres-socket-factory -->
+	<dependency>
+	    <groupId>com.google.cloud.sql</groupId>
+	    <artifactId>postgres-socket-factory</artifactId>
+	    <version>${cloudsql.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+	<dependency>
+	    <groupId>org.postgresql</groupId>
+	    <artifactId>postgresql</artifactId>
+	    <version>${postgres.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+	<dependency>
+	    <groupId>com.zaxxer</groupId>
+	    <artifactId>HikariCP</artifactId>
+	    <version>${hikari.version}</version>
+	</dependency>
   </dependencies>
 </project>
